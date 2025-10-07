@@ -1,0 +1,48 @@
+1. Prato.php (Model)
+Função geral:
+Gerencia as operações CRUD da tabela pratos no banco de dados.
+Funções:
+•	__construct()
+→ Cria a conexão com o banco através da classe Connection.
+•	create($data)
+→ Insere um novo prato no banco (nome, descricao, preco, categoria).
+→ Retorna o ID do novo prato criado.
+•	getAll()
+→ Busca todos os pratos existentes na tabela.
+→ Retorna um array com todos os registros.
+•	find($id)
+→ Busca um prato específico pelo id.
+→ Retorna os dados do prato ou false se não existir.
+•	update($id, $data)
+→ Atualiza as informações de um prato específico.
+→ Retorna a quantidade de linhas afetadas (geralmente 1 ou 0).
+•	delete($id)
+→ Exclui o prato pelo id.
+→ Retorna true se excluiu, false se o prato não existia.
+
+
+2. PratosController.php (Controller)
+Função geral:
+Recebe as requisições HTTP, chama o model (Prato) e retorna as respostas em formato JSON com o status HTTP adequado.
+Funções:
+•	__construct()
+→ Instancia o model Prato para uso nas operações.
+•	index()
+→ Lista todos os pratos.
+→ Retorna status 200 (OK) e o JSON com os dados.
+•	show($id)
+→ Busca um prato específico.
+→ Retorna 200 (OK) se encontrado ou 404 (Not Found) se não existir.
+•	store($data)
+→ Valida se nome e preco foram enviados.
+→ Cria um novo prato via model.
+→ Retorna 201 (Created) com o ID do novo prato.
+•	update($id, $data)
+→ Atualiza um prato existente.
+→ Retorna:
+o	200 (OK) se atualizou;
+o	404 (Not Found) se não achou o prato;
+o	500 (Internal Server Error) se houve falha.
+•	destroy($id)
+→ Exclui um prato pelo ID.
+→ Retorna 200 (OK) se excluído ou 404 (Not Found) se não existia.
