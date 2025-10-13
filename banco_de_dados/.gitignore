@@ -1,0 +1,7 @@
+# Arquivos sensíveis
+.env
+
+# Logs e backups
+*.log
+*.bak
+*.tmp
