@@ -1,0 +1,59 @@
+@import url("style.css");
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 450px;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.toggle-link {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.toggle-link a {
+  color: var(--cor-principal);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.toggle-link a:hover {
+  text-decoration: underline;
+}
+
+.message {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  text-align: center;
+  font-weight: bold;
+  display: none;
+}
+
+.message.success {
+  background-color: #2e7d32;
+  color: white;
+  display: block;
+}
+
+.message.error {
+  background-color: var(--cor-perigo);
+  color: white;
+  display: block;
+}
