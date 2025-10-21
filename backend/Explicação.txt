@@ -1,0 +1,80 @@
+Documentação do Sistema de Restaurante
+1. Estrutura de Autenticação
+AuthController.php
+Função geral: Gerencia autenticação e registro de clientes
+
+register($data): Cadastra novos clientes validando dados obrigatórios
+login($data): Autentica clientes existentes
+Realiza validações de email/CPF duplicados
+Retorna respostas HTTP apropriadas (201, 400, 401, 409, 500)
+Cliente.php (Model)
+Função geral: Gerencia operações com clientes no banco
+
+Operações: criar cliente, buscar por email, verificar duplicatas
+Usa hash seguro para senhas
+Gerencia campos: nome, email, senha, telefone, endereço, CPF
+-----------------------------------------------------------------
+2. Gerenciamento de Pratos
+PratosController.php
+Função geral: Controla operações CRUD de pratos
+Endpoints:
+
+index(): Lista todos os pratos (GET)
+show($id): Busca prato específico (GET)
+store($data): Cria novo prato (POST)
+update($id, $data): Atualiza prato (PUT)
+destroy($id): Remove prato (DELETE)
+Prato.php (Model)
+Função geral: Gerencia dados dos pratos no banco
+Operações:
+
+create(): Insere novo prato
+getAll(): Lista todos os pratos
+find($id): Busca prato por ID
+update(): Atualiza dados do prato
+delete(): Remove prato
+exists(): Verifica existência
+-----------------------------------------------------------------
+3. Infraestrutura
+Connection.php
+Função geral: Gerencia conexão com banco PostgreSQL
+
+Implementa Singleton para conexão PDO
+Usa variáveis de ambiente via .env
+Configurações de segurança PDO
+DotEnv.php
+Função geral: Carrega variáveis de ambiente
+
+Lê arquivo .env
+Configura variáveis no ambiente PHP
+Essencial para configurações seguras
+index.php (Router)
+Função geral: Ponto de entrada da API
+Funcionalidades:
+
+Configuração de CORS
+Autoload de classes
+Roteamento de requisições
+Endpoints:
+/cadastro: Registro de clientes
+/login: Autenticação
+/pratos: CRUD de pratos
+/: Endpoint de status
+-----------------------------------------------------------------
+Endpoints da API
+Autenticação
+POST /cadastro: Registro de novos clientes
+POST /login: Login de clientes
+Pratos
+GET /pratos: Lista todos os pratos
+GET /pratos/{id}: Busca prato específico
+POST /pratos: Cria novo prato
+PUT /pratos/{id}: Atualiza prato
+DELETE /pratos/{id}: Remove prato
+-----------------------------------------------------------------
+Segurança
+Proteção contra SQL Injection via PDO
+Hash seguro de senhas
+Validações de dados
+Controle de CORS
+Configurações via variáveis de ambiente
