@@ -5,23 +5,22 @@
 -- RMG: 802.556
 -- ======================================================
 
--- Cria o banco de dados
 CREATE DATABASE restaurante;
-
--- Conecta ao banco recém-criado
 \c restaurante;
 
 -- ======================================================
 -- TABELAS PRINCIPAIS
 -- ======================================================
 
--- CLIENTES
+-- CLIENTES (com autenticação)
 CREATE TABLE clientes (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     telefone VARCHAR(20),
     endereco VARCHAR(255),
-    cpf VARCHAR(14) UNIQUE NOT NULL
+    cpf VARCHAR(14) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    senha VARCHAR(255) NOT NULL
 );
 
 -- PRATOS
@@ -55,7 +54,7 @@ CREATE TABLE pedidos (
         ON DELETE CASCADE
 );
 
--- ITENS DO PEDIDO (N:N entre pedidos e pratos)
+-- ITENS DO PEDIDO
 CREATE TABLE itens_pedido (
     id SERIAL PRIMARY KEY,
     pedido_id INT NOT NULL,
@@ -76,7 +75,7 @@ CREATE TABLE itens_pedido (
 CREATE TABLE pagamentos (
     id SERIAL PRIMARY KEY,
     pedido_id INT NOT NULL,
-    tipo VARCHAR(20), -- PIX, cartão, dinheiro
+    tipo VARCHAR(20),
     comprovante VARCHAR(255),
     valor DECIMAL(10,2),
     data_pagamento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -87,17 +86,19 @@ CREATE TABLE pagamentos (
 );
 
 -- ======================================================
--- ÍNDICES E OTIMIZAÇÕES
+-- ÍNDICES
 -- ======================================================
 CREATE INDEX idx_clientes_cpf ON clientes (cpf);
+CREATE INDEX idx_clientes_email ON clientes (email);
+CREATE INDEX idx_clientes_nome ON clientes (nome);
 CREATE INDEX idx_pedidos_status ON pedidos (status);
 CREATE INDEX idx_pagamentos_data ON pagamentos (data_pagamento);
 
 -- ======================================================
--- VIEWS PARA CONSULTAS (FACILITAR O FRONT-END)
+-- VIEWS
 -- ======================================================
 
--- Histórico detalhado de pedidos
+-- Histórico de pedidos detalhado
 CREATE OR REPLACE VIEW vw_pedidos_detalhados AS
 SELECT 
     p.id AS pedido_id,
@@ -113,7 +114,7 @@ JOIN clientes c ON c.id = p.cliente_id
 LEFT JOIN itens_pedido i ON i.pedido_id = p.id
 GROUP BY p.id, c.nome, p.data_pedido, p.status, p.forma_pagamento, p.valor_total;
 
--- Estoque com alerta automático
+-- Estoque com alerta
 CREATE OR REPLACE VIEW vw_estoque_alerta AS
 SELECT 
     id,
@@ -147,7 +148,19 @@ JOIN pratos p ON p.id = i.prato_id
 GROUP BY p.nome
 ORDER BY total_vendido DESC;
 
--- Visão geral de clientes com total de pedidos
+-- Clientes (dados públicos, sem senha)
+CREATE OR REPLACE VIEW vw_clientes_publicos AS
+SELECT
+    id,
+    nome,
+    email,
+    telefone,
+    endereco,
+    cpf,
+    data_cadastro
+FROM clientes;
+
+-- Resumo de clientes com total de pedidos
 CREATE OR REPLACE VIEW vw_clientes_resumo AS
 SELECT 
     c.id,
@@ -160,10 +173,10 @@ LEFT JOIN pedidos p ON p.cliente_id = c.id
 GROUP BY c.id, c.nome, c.cpf;
 
 -- ======================================================
--- FUNCTIONS (FUNÇÕES PARA OPERAÇÕES AUTOMÁTICAS)
+-- FUNCTIONS
 -- ======================================================
 
--- Atualiza o valor total de um pedido
+-- Atualiza valor total do pedido
 CREATE OR REPLACE FUNCTION atualizar_valor_total(p_pedido_id INT)
 RETURNS VOID AS $$
 BEGIN
@@ -177,7 +190,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Reduz o estoque de ingredientes (simples)
+-- Reduz estoque
 CREATE OR REPLACE FUNCTION reduzir_estoque(p_ingrediente_id INT, p_qtd INT)
 RETURNS VOID AS $$
 BEGIN
@@ -187,7 +200,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Retorna o faturamento de um período
+-- Faturamento por período
 CREATE OR REPLACE FUNCTION faturamento_periodo(data_inicial DATE, data_final DATE)
 RETURNS NUMERIC AS $$
 DECLARE
@@ -201,7 +214,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Lista pedidos filtrados por status
+-- Listar pedidos por status
 CREATE OR REPLACE FUNCTION listar_pedidos_por_status(p_status VARCHAR)
 RETURNS TABLE (
     pedido_id INT,
@@ -219,7 +232,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Retorna o número total de clientes ativos
+-- Total de clientes ativos
 CREATE OR REPLACE FUNCTION total_clientes()
 RETURNS INT AS $$
 DECLARE
@@ -230,7 +243,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Atualiza automaticamente o valor total após inserir item
+-- Trigger: atualiza automaticamente valor total
 CREATE OR REPLACE FUNCTION trg_atualizar_total()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -243,3 +256,20 @@ CREATE TRIGGER atualizar_total_pedido
 AFTER INSERT OR UPDATE OR DELETE ON itens_pedido
 FOR EACH ROW
 EXECUTE FUNCTION trg_atualizar_total();
+
+-- Autenticação de cliente (login)
+CREATE OR REPLACE FUNCTION autenticar_cliente(p_email VARCHAR, p_senha VARCHAR)
+RETURNS TABLE (
+    id INT,
+    nome VARCHAR,
+    email VARCHAR,
+    telefone VARCHAR
+) AS $$
+BEGIN
+    RETURN QUERY
+    SELECT c.id, c.nome, c.email, c.telefone
+    FROM clientes c
+    WHERE c.email = p_email
+      AND c.senha = p_senha;
+END;
+$$ LANGUAGE plpgsql;
