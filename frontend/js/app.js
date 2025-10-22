@@ -1,4 +1,4 @@
-const apiUrl = "http://localhost/projeto-gerencia/backend/api.php";
+const apiUrl = "http://localhost:8080/ProjetoGerencia/backend";
 
 const form = document.getElementById("formPrato");
 const pratoIdInput = document.getElementById("pratoId");
@@ -72,6 +72,11 @@ async function salvarPrato(event) {
   const endpoint = id ? `${apiUrl}/pratos/${id}` : `${apiUrl}/pratos`;
 
   try {
+    if(!pratoData.nome || !pratoData.preco) {
+      alert("Nome e Preço são obrigatórios.");
+      return;
+    }
+
     const response = await fetch(endpoint, {
       method: method,
       headers: {

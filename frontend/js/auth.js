@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost/projeto-gerencia/backend";
+const baseUrl = "http://localhost:8080/ProjetoGerencia/backend";
 
 const loginContainer = document.getElementById("login-container");
 const registerContainer = document.getElementById("register-container");
@@ -61,7 +61,7 @@ formCadastro.addEventListener("submit", async (e) => {
       "success"
     );
     formCadastro.reset();
-
+php
     setTimeout(() => {
       showLoginLink.click();
       registerMessage.style.display = "none";

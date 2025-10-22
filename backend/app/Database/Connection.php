@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../DotEnv.php';
+require_once __DIR__ . '/../../DotEnv.php';
 
 class Connection
 {
