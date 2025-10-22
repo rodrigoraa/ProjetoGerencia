@@ -12,7 +12,7 @@ Configuração do XAMPP -> Após instalado, iniciar o XAMPP Control Panel -> Em 
 ;extension=pdo_pgsql
 ;extension=pgsql
 
-Voltando a tela inicial do XAMPP Control Panel, novamente em APACHE > CONFIG > Apache(httpd.conf) e remover o "#"(hashtag) do seguindo módulo
+Voltando a tela inicial do XAMPP Control Panel, novamente em APACHE > CONFIG > Apache(httpd.conf) e remover o "#"(hashtag) do seguinte módulo
 #LoadModule rewrite_module modules/mod_rewrite.so
 
 DETALHE IMPORTANTE ⚠️⚠️⚠️
