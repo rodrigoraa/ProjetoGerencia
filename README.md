@@ -14,6 +14,8 @@ Configuração do XAMPP -> Após instalado, iniciar o XAMPP Control Panel -> Em 
 
 Voltando a tela inicial do XAMPP Control Panel, novamente em APACHE > CONFIG > Apache(httpd.conf) e remover o "#"(hashtag) do seguinte módulo
 #LoadModule rewrite_module modules/mod_rewrite.so
+Ainda dentro de APACHE > CONFIG > Apache(httpd.conf) - Procure por Listen 80 - Se refere a porta do servidor, mude a porta para 8080
+
 
 DETALHE IMPORTANTE ⚠️⚠️⚠️
 O projeto deve estar dentro da pasta dos arquivos do XAMP - Normalmente localizada em: C:\xampp\htdocs
