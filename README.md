@@ -4,7 +4,7 @@ Instalar as seguintes extensões no VSCode
 -> SQLTools: https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools / ID: mtxr.sqltools
 -> SQLTools PostgreSQL/Cockroach Driver: https://marketplace.visualstudio.com/items?itemName=mtxr.sqltools-driver-pg mtxr.sqltools-driver-pg / ID: mtxr.sqltools-driver-pg
 
-Instalar o PostgreSQL 18 -> https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
+Instalar o PostgreSQL 18 e adicionar ao PATH -> https://www.enterprisedb.com/downloads/postgres-postgresql-downloads
 
 Instalar o XAMPP -> https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.12/xampp-windows-x64-8.2.12-0-VS16-installer.exe
 
