@@ -103,7 +103,7 @@ formLogin.addEventListener("submit", async (e) => {
     );
 
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "pratos.html";
     }, 1500);
   } catch (error) {
     exibirMensagem(loginMessage, error.message, "error");
