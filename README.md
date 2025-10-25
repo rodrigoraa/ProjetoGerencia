@@ -20,6 +20,8 @@ Ainda dentro de APACHE > CONFIG > Apache(httpd.conf) - Procure por Listen 80 - S
 DETALHE IMPORTANTE ⚠️⚠️⚠️
 O projeto deve estar dentro da pasta dos arquivos do XAMP - Normalmente localizada em: C:\xampp\htdocs
 
+Antes de iniciar a conexão com o banco no SQLTools, executar esse comando no terminal -> psql -U postgres -f C:\xampp\htdocs\ProjetoGerencia\banco_de_dados\init_database.sql
+
 Agora o servidor Apache já pode ser iniciado.
 
 link para acesso -> http://localhost:8080/ProjetoGerencia/frontend/
